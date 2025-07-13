@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from app.db.models import User, UserRole
+from app.db.models import User, UserRole, Subscription
 from app.schemas.auth import UserRegister, PasswordChange, ResetPasswordRequest
 from app.core.security import get_password_hash, verify_password
 from app.core.exceptions import UserAlreadyExistsException, InvalidCredentialsException
@@ -13,7 +13,7 @@ class UserService:
         self.db = db
         self.otp_service = OTPService(db)
 
-    async def get_user_by_mobile(self, mobile_number: str) -> User:
+    async def get_user_by_mobile(self, mobile_number: str) -> User | None:
         stmt = select(User).where(User.mobile_number == mobile_number)
         result = await self.db.execute(stmt)
         return result.scalars().first()
@@ -33,11 +33,14 @@ class UserService:
         await self.db.commit()
         await self.db.refresh(new_user)
 
+        
+        new_subscription = Subscription(user_id=new_user.id, tier=UserRole.BASIC.value, status="active")
+        self.db.add(new_subscription)
         await self.db.commit()
 
         return new_user
 
-    async def authenticate_user(self, mobile_number: str, password: str) -> User:
+    async def authenticate_user(self, mobile_number: str, password: str) -> User | None:
         user = await self.get_user_by_mobile(mobile_number)
         if not user or not verify_password(password, user.hashed_password):
             raise InvalidCredentialsException()
@@ -56,7 +59,7 @@ class UserService:
     async def reset_password_with_otp(self, reset_request: ResetPasswordRequest) -> User:
         is_otp_valid = await self.otp_service.verify_otp(reset_request.mobile_number, reset_request.otp_code)
         if not is_otp_valid:
-            raise InvalidCredentialsException()
+            raise InvalidCredentialsException() 
 
         user = await self.get_user_by_mobile(reset_request.mobile_number)
         if not user:

@@ -4,7 +4,7 @@ from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from contextlib import asynccontextmanager
 
-from app.api import auth, user
+from app.api import auth, chatroom, subscription, user
 from app.core.config import settings
 from app.db.session import engine
 from app.db.base import Base
@@ -36,6 +36,8 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     )
 
 app.include_router(auth.router, prefix=settings.API_STR)
+app.include_router(chatroom.router, prefix=settings.API_STR)
+app.include_router(subscription.router, prefix=settings.API_STR)
 app.include_router(user.router, prefix=settings.API_STR)
 
 @app.get("/")
