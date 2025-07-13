@@ -60,27 +60,28 @@ The application follows a layered architecture:
 Create a `.env` file in the root directory of the project based on the `.env.example` file.
 
 ```dotenv
-DATABASE_URL="postgresql+asyncpg://user:password@host:port/database_name"
-SECRET_KEY="YOUR_SUPER_SECRET_JWT_KEY" # Generate a strong, random key
-ALGORITHM="HS256"
+POSTGRES_DB=db_kuvaka
+POSTGRES_USER=myuser
+POSTGRES_PASSWORD=mypassword
+
+DATABASE_URL=postgresql+asyncpg://myuser:mypassword@db:5432/db_kuvaka
+
+SECRET_KEY=supersecretjwtkey123
+ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 
-REDIS_HOST="redis" # 'localhost' if running locally without Docker Compose
+REDIS_HOST=redis
 REDIS_PORT=6379
 REDIS_DB=0
-REDIS_PASSWORD="" # Leave empty if no password
+REDIS_PASSWORD=
 
-STRIPE_SECRET_KEY="sk_test_..." # Your Stripe secret key (test mode)
-STRIPE_WEBHOOK_SECRET="whsec_..." # Your Stripe webhook signing secret
-STRIPE_PRO_PRODUCT_ID="prod_..." # Your Stripe Product ID for Pro tier
-STRIPE_PRO_PRICE_ID="price_..." # Your Stripe Price ID for Pro tier
+CELERY_BROKER_URL=redis://redis:6379/1
+CELERY_RESULT_BACKEND=redis://redis:6379/2
 
-GEMINI_API_KEY="YOUR_GEMINI_API_KEY" # Your Google Gemini API key
+STRIPE_SECRET_KEY=sk_test_dummykey
+STRIPE_WEBHOOK_SECRET=whsec_dummywebhook
+STRIPE_BASIC_PRODUCT_ID=prod_dummybasic
+STRIPE_PRO_PRODUCT_ID=prod_dummypro
+STRIPE_PRO_PRICE_ID=price_dummypro
 
-CELERY_BROKER_URL="redis://redis:6379/1" # Change to 'redis://localhost:6379/1' if running locally
-CELERY_RESULT_BACKEND="redis://redis:6379/2" # Change to 'redis://localhost:6379/2' if running locally
-
-# For Docker Compose DB
-POSTGRES_DB=gemini_db
-POSTGRES_USER=gemini_user
-POSTGRES_PASSWORD=gemini_password
+GEMINI_API_KEY=dummy-gemini-api-key
