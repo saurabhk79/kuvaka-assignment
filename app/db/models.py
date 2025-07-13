@@ -39,7 +39,7 @@ class Message(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     chatroom_id = Column(Integer, ForeignKey("chatrooms.id"))
-    sender = Column(String, nullable=False)  'user' or 'ai'
+    sender = Column(String, nullable=False) 
     content = Column(String, nullable=False)
     sent_at = Column(DateTime, server_default=func.now())
 
@@ -62,8 +62,8 @@ class Subscription(Base):
     user_id = Column(Integer, ForeignKey("users.id"), unique=True)
     stripe_customer_id = Column(String, unique=True, nullable=True)
     stripe_subscription_id = Column(String, unique=True, nullable=True)
-    tier = Column(String, default=UserRole.BASIC.value)  Basic or Pro
-    status = Column(String, default="active")  active, inactive, canceled, trial etc.
+    tier = Column(String, default=UserRole.BASIC.value) 
+    status = Column(String, default="active") 
     current_period_end = Column(DateTime, nullable=True)
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())

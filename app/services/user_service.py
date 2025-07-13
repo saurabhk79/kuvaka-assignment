@@ -13,7 +13,7 @@ class UserService:
         self.db = db
         self.otp_service = OTPService(db)
 
-    async def get_user_by_mobile(self, mobile_number: str) -> User | None:
+    async def get_user_by_mobile(self, mobile_number: str) -> User  :
         stmt = select(User).where(User.mobile_number == mobile_number)
         result = await self.db.execute(stmt)
         return result.scalars().first()
@@ -40,7 +40,7 @@ class UserService:
 
         return new_user
 
-    async def authenticate_user(self, mobile_number: str, password: str) -> User | None:
+    async def authenticate_user(self, mobile_number: str, password: str) -> User  :
         user = await self.get_user_by_mobile(mobile_number)
         if not user or not verify_password(password, user.hashed_password):
             raise InvalidCredentialsException()
