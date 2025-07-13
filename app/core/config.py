@@ -15,15 +15,17 @@ class Settings(BaseSettings):
     REDIS_DB: int = 0
     REDIS_PASSWORD: str = ""
 
-    STRIPE_SECRET_KEY: str
-    STRIPE_WEBHOOK_SECRET: str
-    STRIPE_PRO_PRODUCT_ID: str = "ID"
-    STRIPE_PRO_PRICE_ID: str
+    STRIPE_SECRET_KEY: str = os.getenv("STRIPE_SECRET_KEY")
+    STRIPE_PUBLISHABLE_KEY: str = os.getenv("STRIPE_PUBLISHABLE_KEY")
 
-    GEMINI_API_KEY: str
+    STRIPE_WEBHOOK_SECRET: str = os.getenv("STRIPE_WEBHOOK_SECRET")
+    STRIPE_PRO_PRODUCT_ID: str = os.getenv("STRIPE_PRO_PRODUCT_ID")
+    STRIPE_PRO_PRICE_ID: str = os.getenv("STRIPE_PRO_PRICE_ID")
 
-    CELERY_BROKER_URL: str
-    CELERY_RESULT_BACKEND: str
+    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY")
+
+    CELERY_BROKER_URL: str = os.getenv("CELERY_BROKER_URL")
+    CELERY_RESULT_BACKEND: str = os.getenv("CELERY_RESULT_BACKEND")
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
