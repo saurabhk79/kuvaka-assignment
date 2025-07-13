@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+sqlalchemy
+python-jose[cryptography]
+passlib[bcrypt]
+redis
+pydantic
+stripe
+google-generativeai
+celery
+python-dotenv
+pydantic-settings
+asyncpg
