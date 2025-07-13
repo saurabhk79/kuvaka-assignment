@@ -3,7 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Gemini Backend Clone"
-    API_V1_STR: str = "/api"
+    API_STR: str = "/api"
 
     DATABASE_URL: str
     SECRET_KEY: str
